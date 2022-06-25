@@ -1,5 +1,8 @@
 const factoryFunction = require("./handlerFactory");
 const User = require("../model/userModel");
+const cookie = require("body-parser");
+const { eventPoster } = require("./../model/eventModel");
+const jwt = require("jsonwebtoken");
 
 exports.getMe = (req, res, next) => {
   req.params.id = req.user.id;
@@ -47,5 +50,15 @@ exports.deleteMe = async (req, res, next) => {
 
 exports.getAllUser = factoryFunction.getAll(User);
 exports.deleteUser = factoryFunction.deleteOne(User);
+
+exports.findEventCreated = async (req, res) => {
+  const userID = jwt.verify(req.cookies.jwt, process.env.JWT_SECRET);
+  const createdEvent = await eventPoster.findById(userID);
+
+  res.status(200).json({
+    message: "found the data",
+    createdEvent,
+  });
+};
 
 exports.updateUser = factoryFunction.updateOne(User);
