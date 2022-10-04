@@ -1,5 +1,4 @@
-const express = require("express");
-const app = express();
+const app = require("express")();
 const userRouter = require("./routes/userRoute.js");
 const morgan = require("morgan");
 
